@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% block title %}Submit Feedback{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background: #f5f8fa;
+  }
+  .feedback-container {
+    max-width: 700px;
+    margin: 3rem auto;
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  }
+  h2 {
+    text-align: center;
+    font-weight: 700;
+    color: #0f8570;
+    margin-bottom: 1.5rem;
+  }
+  label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+  input.form-control, textarea.form-control, select.form-select {
+    border: none;
+    background: #f7f7f7;
+    border-radius: 30px;
+    padding: 12px 18px;
+    font-size: 15px;
+    color: #333;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+  input.form-control:focus, textarea.form-control:focus, select.form-select:focus {
+    outline: none;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.25);
+  }
+  textarea {
+    resize: none;
+    border-radius: 20px !important;
+  }
+  .btn-submit {
+    background: #0f8570;
+    color: #fff;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1.5rem auto 0;
+    transition: background 0.3s ease;
+  }
+  .btn-submit:hover {
+    background: #0c6b5b;
+  }
+  .btn-submit i {
+    margin-left: 8px;
+    font-size: 1rem;
+  }
+  .btn-location {
+    background: #eafaf6;
+    color: #0f8570;
+    border: 2px solid #0f8570;
+    border-radius: 25px;
+    font-size: 14px;
+    padding: 6px 16px;
+    transition: all 0.3s ease;
+    margin-top: 5px;
+  }
+  .btn-location:hover {
+    background: #0f8570;
+    color: white;
+  }
+  .location-status {
+    font-size: 14px;
+    color: #0f8570;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+</style>
+
+<div class="feedback-container">
+  <h2>Illegal dumping report</h2>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label>Issue Type</label>
+      {{ form.issue_type }}
+    </div>
+
+    <div class="mb-3">
+      <label>Severity</label>
+      {{ form.severity }}
+    </div>
+
+    <div class="mb-3">
+      <label>Location</label>
+      {{ form.location }}
+      <button type="button" class="btn btn-location" onclick="getLocation()">
+        <i class="bi bi-geo-alt"></i> Auto Detect Location
+      </button>
+      <p id="locationStatus" class="location-status"></p>
+    </div>
+
+    <div class="mb-3">
+      <label>Landmark</label>
+      {{ form.landmark }}
+    </div>
+
+    <div class="mb-3">
+      <label>City</label>
+      {{ form.city }}
+    </div>
+
+    <div class="mb-3">
+      <label>Pincode</label>
+      {{ form.pincode }}
+    </div>
+
+    <div class="mb-3">
+      <label>Description</label>
+      {{ form.description }}
+    </div>
+
+    <div class="mb-3">
+      <label>Upload Image</label>
+      {{ form.image }}
+    </div>
+
+    <button type="submit" class="btn-submit">
+      Submit <i class="bi bi-arrow-right"></i>
+    </button>
+  </form>
+</div>
+
+<!-- Bootstrap icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<!-- JS: Location Detection -->
+<script>
+  function getLocation() {
+    const locationField = document.querySelector('input[name="location"]');
+    const statusEl = document.getElementById("locationStatus");
+
+    if (!navigator.geolocation) {
+      statusEl.textContent = "Geolocation is not supported by your browser.";
+      statusEl.style.color = "red";
+      return;
+    }
+
+    statusEl.textContent = "Fetching your location...";
+    navigator.geolocation.getCurrentPosition(success, error);
+
+    function success(position) {
+      const lat = position.coords.latitude.toFixed(6);
+      const lon = position.coords.longitude.toFixed(6);
+      locationField.value = `${lat}, ${lon}`;
+      statusEl.textContent = "✅ Location captured successfully!";
+      statusEl.style.color = "#0f8570";
+    }
+
+    function error() {
+      statusEl.textContent = "❌ Unable to retrieve your location.";
+      statusEl.style.color = "red";
+    }
+  }
+</script>
+{% endblock %}

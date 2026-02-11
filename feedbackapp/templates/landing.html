@@ -1,0 +1,332 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoZone | Home</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      overflow-x: hidden;
+      color: #222;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f8570, #1ba380);
+      color: #fff;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    header a.nav-link {
+      color: #fff !important;
+      font-weight: 500;
+    }
+
+    /* Hero */
+    .hero {
+      height: 95vh;
+      background: url("{% static 'images/waste1.jpg' %}") no-repeat center center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      text-align: center;
+      color: #fff;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .hero-content h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+    }
+
+    .hero-content p {
+      color: #dfece8;
+      margin: 1.2rem 0 1.8rem;
+    }
+
+    .hero-content a {
+      background: #0f8570;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 50px;
+      color: #fff;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .hero-content a:hover {
+      background: #0c6b5b;
+    }
+
+    /* Features */
+    .feature-icon {
+      font-size: 2.2rem;
+      color: #0f8570;
+    }
+
+    .feature-card {
+      border: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* How it works */
+    .step-icon {
+      width: 60px;
+      height: 60px;
+      background: #0f8570;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      margin: 0 auto 15px;
+    }
+
+    /* Mission & Benefits */
+    .mission {
+      background: #f8f9fa;
+      padding: 5rem 0;
+    }
+    .benefit-icon {
+      font-size: 2rem;
+      color: #0f8570;
+      margin-bottom: 1rem;
+    }
+    .mission h2 {
+      font-weight: 700;
+    }
+
+    /* Testimonials */
+    .testimonials {
+      background: #fff;
+      padding: 5rem 0;
+    }
+    .testimonial {
+      background: #f9f9f9;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* CTA */
+    .cta {
+      background: url("{% static 'images/waste1.jpg' %}") no-repeat center center/cover;
+      color: #fff;
+      padding: 5rem 0;
+      position: relative;
+      text-align: center;
+    }
+    .cta::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+    }
+    .cta-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    footer {
+      background: #0f8570;
+      color: white;
+      padding: 1rem 0;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <header>
+    <div class="container d-flex justify-content-between align-items-center">
+      <h4 class="fw-bold mb-0">EcoZone</h4>
+      <nav>
+        <ul class="nav">
+          <li class="nav-item"><a href="#features" class="nav-link">Features</a></li>
+          <li class="nav-item"><a href="#how" class="nav-link">How It Works</a></li>
+          <li class="nav-item"><a href="#mission" class="nav-link">Our Mission</a></li>
+          <li class="nav-item"><a href="#testimonials" class="nav-link">Testimonials</a></li>
+          <li class="nav-item"><a href="{% url 'login' %}" class="nav-link btn btn-light text-dark px-3 rounded-pill">Login</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 data-aos="fade-up">Empowering Citizens for Better Ecosystem</h1>
+      <p data-aos="fade-up" data-aos-delay="100">Report illegal dumping, track their progress, and contribute to safer ecosystem for everyone.</p>
+      <a href="{% url 'register' %}" data-aos="fade-up" data-aos-delay="200">Get Started</a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="container text-center py-5">
+    <h2 class="fw-bold mb-5" data-aos="fade-up">Why Use Our Platform?</h2>
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="zoom-in">
+        <div class="card feature-card p-4 shadow-sm">
+          <i class="bi bi-camera feature-icon mb-3"></i>
+          <h5>Attach Photos</h5>
+          <p>Provide clear evidence of the issue to help authorities act faster.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="150">
+        <div class="card feature-card p-4 shadow-sm">
+          <i class="bi bi-geo-alt feature-icon mb-3"></i>
+          <h5>Auto-Detect Location</h5>
+          <p>Your device automatically captures location for accurate reporting.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+        <div class="card feature-card p-4 shadow-sm">
+          <i class="bi bi-clock-history feature-icon mb-3"></i>
+          <h5>Track Real-Time Updates</h5>
+          <p>Follow the status of your report directly from your dashboard.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how" class="text-center py-5 bg-light">
+    <div class="container">
+      <h2 class="fw-bold mb-5" data-aos="fade-up">How It Works</h2>
+      <div class="row g-5">
+        <div class="col-md-4" data-aos="fade-up">
+          <div class="step-icon"><i class="bi bi-pencil-square"></i></div>
+          <h5>Submit Report</h5>
+          <p>Enter dumping details, upload an image, and describe the problem.</p>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="150">
+          <div class="step-icon"><i class="bi bi-hourglass-split"></i></div>
+          <h5>Admin Review</h5>
+          <p>Authorities review and assign the issue for resolution.</p>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="step-icon"><i class="bi bi-check2-circle"></i></div>
+          <h5>Issue Resolved</h5>
+          <p>Get notified once the problem is fixed and verified.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission & Benefits Section -->
+  <section id="mission" class="mission">
+    <div class="container text-center">
+      <h2 class="mb-4" data-aos="fade-up">Our Mission</h2>
+      <p class="lead mb-5" data-aos="fade-up" data-aos-delay="100">
+        To build a bridge between citizens and local authorities by creating a transparent, accessible, and data-driven
+        ecosystem maintenance system that improves safety and convenience for everyone.
+      </p>
+
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="zoom-in">
+          <i class="bi bi-person-heart benefit-icon"></i>
+          <h5>For Citizens</h5>
+          <p>Empowers people to voice concerns about dumping issues instantly from their smartphones.</p>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="150">
+          <i class="bi bi-building-check benefit-icon"></i>
+          <h5>For Authorities</h5>
+          <p>Provides an organized dashboard to track, verify, and respond to public report efficiently.</p>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+          <i class="bi bi-globe2 benefit-icon"></i>
+          <h5>For the Community</h5>
+          <p>Encourages collective participation to maintain cleaner, safer, and sustainable road networks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials" class="testimonials text-center">
+    <div class="container">
+      <h2 class="fw-bold mb-5" data-aos="fade-up">What Citizens Say</h2>
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="zoom-in">
+          <div class="testimonial">
+            <i class="bi bi-quote fs-1"></i>
+            <p>“This platform made it easy to report illegal dumping in my area. Within a week, the problem was fixed!”</p>
+            <h6 class="mt-3 fw-bold">– Priya S.</h6>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="150">
+          <div class="testimonial">
+            <i class="bi bi-quote fs-1"></i>
+            <p>“A simple idea with great impact. Our surroundings are noticeably better now.”</p>
+            <h6 class="mt-3 fw-bold">– Rajesh K.</h6>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+          <div class="testimonial">
+            <i class="bi bi-quote fs-1"></i>
+            <p>“Love the dashboard — it keeps me informed about all my reports in one place.”</p>
+            <h6 class="mt-3 fw-bold">– Neha G.</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta-content">
+      <h2 class="fw-bold mb-3" data-aos="fade-up">Be Part of the Change</h2>
+      <p data-aos="fade-up" data-aos-delay="100">Your report can make ecosystem safer and better for everyone.</p>
+      <a href="{% url 'register' %}" class="btn btn-light text-dark px-4 rounded-pill mt-3" data-aos="fade-up" data-aos-delay="200">Register Now</a>
+    </div>
+  </section>
+
+  <footer>
+    <p class="mb-0">© {{ now|date:"Y" }} EcoZone. All Rights Reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init({ duration: 800, once: true });</script>
+</body>
+</html>

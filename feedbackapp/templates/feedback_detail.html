@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% block title %}Feedback #{{ feedback.id }} Details{% endblock %}
+
+{% block content %}
+<style>
+  .feedback-detail-card {
+    max-width: 700px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .feedback-detail-card h3 {
+    color: #0f8570;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .info {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    font-weight: 600;
+    color: #444;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  p {
+    margin: 0;
+    color: #333;
+  }
+
+  .badge {
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+  }
+
+  .feedback-image {
+    max-width: 100%;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-top: 1rem;
+  }
+
+  .btn-back {
+    display: inline-block;
+    margin-top: 2rem;
+    background: #0f8570;
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-back:hover {
+    background: #0c6b5b;
+  }
+
+  .status-form select {
+    border-radius: 30px;
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    background-color: #f8f9fa;
+    margin-right: 10px;
+  }
+
+  .btn-update {
+    background: #0f8570;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 50px;
+    border: none;
+    transition: 0.3s;
+    font-weight: 600;
+  }
+
+  .btn-update:hover {
+    background: #0c6b5b;
+  }
+
+</style>
+
+<div class="feedback-detail-card">
+  <h3>Illegal dumping report #{{ feedback.id }}</h3>
+
+  <div class="info">
+    <label>Issue Type:</label>
+    <p>{{ feedback.issue_type|default:"—" }}</p>
+  </div>
+
+  <div class="info">
+    <label>Severity:</label>
+    <p>{{ feedback.severity|default:"—" }}</p>
+  </div>
+
+  <div class="info">
+    <label>Location:</label>
+    <p>{{ feedback.location }}</p>
+  </div>
+
+  {% if feedback.landmark %}
+  <div class="info">
+    <label>Landmark:</label>
+    <p>{{ feedback.landmark }}</p>
+  </div>
+  {% endif %}
+
+  <div class="info">
+    <label>Description:</label>
+    <p>{{ feedback.description }}</p>
+  </div>
+
+  <div class="info">
+    <label>Status:</label>
+    {% if user.is_staff %}
+      <!-- ✅ Admin can change status -->
+      <form method="POST" class="status-form d-flex align-items-center">
+        {% csrf_token %}
+        <select name="status" class="form-select w-auto">
+          <option value="Pending" {% if feedback.status == 'Pending' %}selected{% endif %}>Pending</option>
+          <option value="In Progress" {% if feedback.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+          <option value="Resolved" {% if feedback.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+        </select>
+        <button type="submit" class="btn-update">Update</button>
+      </form>
+    {% else %}
+      {% if feedback.status == 'Pending' %}
+        <span class="badge bg-danger">{{ feedback.status }}</span>
+      {% elif feedback.status == 'In Progress' %}
+        <span class="badge bg-warning text-dark">{{ feedback.status }}</span>
+      {% else %}
+        <span class="badge bg-success">{{ feedback.status }}</span>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <div class="info">
+    <label>Submitted On:</label>
+    <p>{{ feedback.created_at|date:"M d, Y — h:i A" }}</p>
+  </div>
+
+  {% if feedback.image %}
+  <div class="info">
+    <label>Attached Image:</label>
+    <img src="{{ feedback.image.url }}" class="feedback-image" alt="Feedback Image">
+  </div>
+  {% endif %}
+
+  <a href="javascript:history.back()" class="btn-back mt-4">
+    ← Back
+  </a>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+{% endblock %}

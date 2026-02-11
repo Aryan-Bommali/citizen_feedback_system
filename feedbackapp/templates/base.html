@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Dashboard{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+  <style>
+    * {
+      font-family: 'Poppins', sans-serif !important;
+    }
+
+    body {
+      background-color: #f5f8fa;
+      padding-top: 70px;
+    }
+
+    .nav-link {
+      color: #333 !important;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .nav-link:hover {
+      background-color: rgba(15, 133, 112, 0.1);
+      color: #0f8570 !important;
+    }
+
+    .nav-link.active {
+      background-color: #0f8570 !important;
+      color: white !important;
+      font-weight: 600;
+    }
+
+    .navbar-brand {
+      font-size: 1.1rem;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280,0,0,0.6%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    .navbar {
+      height: 80px;
+      transition: background 0.3s ease, backdrop-filter 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(18px);
+    }
+
+    .logout {
+      background-color: #0f8570;
+      color: white;
+    }
+
+    .logout:hover {
+      background-color: #0d6e5c;
+      color: white;
+    }
+
+    .message-popup {
+      animation: slideIn 0.4s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+</head>
+
+<body class="bg-light">
+
+  <!-- 🌐 Modern Navbar -->
+  <!-- 🌐 Modern Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top shadow-sm"
+    style="backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.8); border-bottom: 1px solid rgba(0,0,0,0.05);">
+    <div class="container">
+      <!-- Logo / Brand -->
+      <a class="navbar-brand fw-bold text-dark d-flex align-items-center" href="#">
+        <i class="bi bi-geo-alt-fill text-success me-2"></i>
+        <span>EcoZone</span>
+      </a>
+
+      <!-- Mobile menu toggle -->
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar content -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        <!-- Left-side navlinks -->
+        {% if user.is_authenticated %}
+        <ul class="navbar-nav ms-4 me-auto align-items-center gap-3">
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/dashboard/user/' %}active{% endif %}"
+              href="{% url 'user_dashboard' %}">
+              <i class="bi bi-speedometer2 me-1"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/submit-feedback/' %}active{% endif %}"
+              href="{% url 'submit_feedback' %}">
+              <i class="bi bi-plus-circle me-1"></i> Submit Report
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/profile/' %}active{% endif %}" href="{% url 'profile' %}">
+              <i class="bi bi-person-circle me-1"></i> Profile
+            </a>
+          </li>
+        </ul>
+        {% endif %}
+
+        <!-- Right-side user and logout -->
+        <ul class="navbar-nav align-items-center">
+          {% if user.is_authenticated %}
+          <li class="nav-item me-3 small fw-semibold text-dark">
+            👋 Hi, <span class="text-success">{{ user.username }}</span>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'logout' %}" class="logout btn px-4 py-2 rounded-pill fw-semibold shadow-sm">
+              Logout
+            </a>
+          </li>
+          {% else %}
+          <li class="nav-item me-2">
+            <a href="{% url 'login' %}" class="btn btn-outline-success px-4 py-1 rounded-pill fw-semibold shadow-sm">
+              Login
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'register' %}" class="btn btn-success px-4 py-1 rounded-pill fw-semibold shadow-sm">
+              Register
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  {% if messages %}
+  <div id="message-container" style="position: fixed; top: 90px; left: 50%; transform: translate(-50%, -50%);
+              z-index: 2000; text-align: center; width: 100%; max-width: 400px;">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} shadow-lg fade show message-popup" role="alert"
+      style="border-radius: 12px; padding: 12px 18px; min-width: 250px; font-weight: 500;">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+
+  <div class="container mt-4">
+    {% block content %}
+    {% endblock %}
+  </div>
+  <script>
+    // Automatically fade out messages after 3 seconds
+    document.addEventListener("DOMContentLoaded", function () {
+      const messages = document.querySelectorAll('.message-popup');
+      messages.forEach(function (msg) {
+        setTimeout(() => {
+          msg.classList.remove('show');
+          msg.classList.add('fade');
+          setTimeout(() => msg.remove(), 500); // remove completely
+        }, 3000); // 3 seconds visible
+      });
+    });
+  </script>
+
+</body>
+
+</html>
+<script>
+  window.addEventListener('scroll', function () {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 10) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+</script>

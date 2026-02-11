@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% block title %}User Dashboard{% endblock %}
+
+{% block content %}
+<style>
+  /* === Dashboard Modern Look === */
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .dashboard-header h2 {
+    font-weight: 700;
+    color: #222;
+  }
+
+  .filter-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .filter-select {
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    padding: 6px 14px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+
+  .filter-select:focus {
+    border-color: #0f8570;
+    box-shadow: 0 0 0 3px rgba(15, 133, 112, 0.25);
+    outline: none;
+  }
+
+  .btn-add-feedback {
+    background: #0f8570;
+    color: white;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 50px;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(15, 133, 112, 0.3);
+  }
+
+  .btn-add-feedback:hover {
+    background: #0c6b5b;
+    box-shadow: 0 4px 12px rgba(15, 133, 112, 0.4);
+  }
+
+  .feedback-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    border: none;
+  }
+
+  .feedback-table {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .feedback-table thead {
+    background: linear-gradient(90deg, #0f8570, #1ba380);
+    color: white;
+    border-bottom: none;
+  }
+
+  .feedback-table tbody tr {
+    transition: all 0.2s ease;
+  }
+
+  .feedback-table tbody tr:hover {
+    background: #f8f9fa;
+  }
+
+  .badge {
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+  }
+
+  .badge.bg-danger {
+    background-color: #f76c6c !important;
+  }
+
+  .badge.bg-warning {
+    background-color: #ffcf56 !important;
+  }
+
+  .badge.bg-success {
+    background-color: #4caf50 !important;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #777;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .empty-state i {
+    font-size: 3rem;
+    color: #0f8570;
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="dashboard-header">
+  <h2>Illegal dumping report</h2>
+
+  <!-- Filter + Add Feedback Buttons -->
+  <div class="d-flex align-items-center gap-2 flex-wrap">
+    <form method="get" class="filter-form">
+      <select name="status" class="filter-select" onchange="this.form.submit()">
+        <option value="">All Status</option>
+        <option value="Pending" {% if request.GET.status == 'Pending' %}selected{% endif %}>Pending</option>
+        <option value="In Progress" {% if request.GET.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+        <option value="Resolved" {% if request.GET.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+      </select>
+    </form>
+
+    <a href="{% url 'submit_feedback' %}" class="btn btn-add-feedback">
+      + add report
+    </a>
+  </div>
+</div>
+
+{% if feedbacks %}
+<div class="feedback-card p-3">
+  <div class="table-responsive feedback-table">
+    <table class="table align-middle mb-0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Location</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Submitted On</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fb in feedbacks %}
+        <tr>
+          <td>
+            <a href="{% url 'feedback_detail' fb.id %}" class="text-decoration-none text-dark fw-semibold">
+              #{{ fb.id }}
+            </a>
+          </td>
+          <td>
+            <a href="{% url 'feedback_detail' fb.id %}" class="text-decoration-none text-dark">
+              {{ fb.location }}
+            </a>
+          </td>
+          <td>
+            <a href="{% url 'feedback_detail' fb.id %}" class="text-decoration-none text-muted">
+              {{ fb.description|truncatewords:12 }}
+            </a>
+          </td>
+
+          <td>
+            {% if fb.status == 'Pending' %}
+            <span class="badge bg-danger">{{ fb.status }}</span>
+            {% elif fb.status == 'In Progress' %}
+            <span class="badge bg-warning text-dark">{{ fb.status }}</span>
+            {% else %}
+            <span class="badge bg-success">{{ fb.status }}</span>
+            {% endif %}
+          </td>
+          <td>{{ fb.created_at|date:"M d, Y" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="empty-state">
+  <i class="bi bi-emoji-smile"></i>
+  <h5 class="fw-bold">No report Found</h5>
+  {% if request.GET.status %}
+  <p class="text-muted mb-3">No report with status “{{ request.GET.status }}”.</p>
+  <a href="{% url 'user_dashboard' %}" class="btn btn-add-feedback">View All</a>
+  {% else %}
+  <p class="text-muted mb-3">You haven’t submitted any report yet.</p>
+  <a href="{% url 'submit_feedback' %}" class="btn btn-add-feedback">Add Report</a>
+  {% endif %}
+</div>
+{% endif %}
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+{% endblock %}
