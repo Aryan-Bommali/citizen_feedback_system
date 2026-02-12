@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-p1vpi02n41yd1g5g4s51$81k=_)42q47wjkrscq1+pci_#ydj@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["citizen-feedback-system-4.onrender.com"]
+ALLOWED_HOSTS = ["citizen-feedback-system-5.onrender.com"]
 
 
 # Application definition
