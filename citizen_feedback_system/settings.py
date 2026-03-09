@@ -28,6 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-p1vpi02n41yd1g5g4s51$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = [
     "citizen-feedback-system-5.onrender.com",
     "citizen-feedback-system-4.onrender.com",
@@ -35,6 +36,9 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1"
 ]
+=======
+ALLOWED_HOSTS = ["citizen-feedback-system-6.onrender.com", "*"]
+>>>>>>> ece165aa71ea55cf7fbc497fb8ce326e9d4e1886
 
 
 # Application definition
@@ -137,8 +141,12 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 CSRF_TRUSTED_ORIGINS = [
+<<<<<<< HEAD
     "https://citizen-feedback-system-4.onrender.com",
     "https://citizen-feedback-system-5.onrender.com",
+=======
+    "https://citizen-feedback-system-6.onrender.com"
+>>>>>>> ece165aa71ea55cf7fbc497fb8ce326e9d4e1886
     "https://*.onrender.com"
 ]
 
