@@ -32,6 +32,7 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = [
     "citizen-feedback-system-5.onrender.com",
     "citizen-feedback-system-4.onrender.com",
+    "citizen-feedback-system-8.onrender.com",
     ".onrender.com",
     "localhost",
     "127.0.0.1"
